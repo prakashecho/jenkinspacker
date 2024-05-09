@@ -6,12 +6,11 @@ packer {
     }
   }
 }
-variable "aws_access_key" {AKIA4XIRYD2OLA3VD6DW}
-variable "aws_secret_key" {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}
+
 
 source "amazon-ebs" "ubuntu" {
-  access_key    = var.aws_access_key
-  secret_key    = var.aws_secret_key
+  access_key    = "AKIA4XIRYD2OLA3VD6DW"
+  secret_key    = "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"
   ami_name      = "Jenkinss"
   instance_type = "t2.small"
   region        = "us-east-1"

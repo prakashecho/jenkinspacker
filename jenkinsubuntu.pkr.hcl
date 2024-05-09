@@ -8,8 +8,8 @@ packer {
 }
 
 source "amazon-ebs" "ubuntu" {
-  access_key    = "AKIA4XIRYD2ODWSV4JMA"
-  secret_key    = "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"
+  access_key    = "AKIA4XIRYD2OOEBAOWW5"
+  secret_key    = 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"
   ami_name      = "packjen"
   instance_type = "t2.small"
   region        = "us-east-1"

@@ -33,4 +33,4 @@ jobs:
 
       - name: Run 'packer build'
         id: build
-        run: "packer build ./jenkinsubuntu.pkr.hcl"
+        run: "packer build jenkinsubuntu.pkr.hcl"

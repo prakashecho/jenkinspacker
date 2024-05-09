@@ -18,7 +18,7 @@ source "amazon-ebs" "ubuntu" {
 }
 
 build {
-  name    = "jenkins1"
+  name    = "packjen"
   sources = ["source.amazon-ebs.ubuntu"]
 
   provisioner "shell" {

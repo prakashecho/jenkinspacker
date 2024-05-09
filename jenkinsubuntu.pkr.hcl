@@ -12,8 +12,8 @@ source "amazon-ebs" "ubuntu" {
   secret_key    = "3PFmEztpxrvhTR9BTGQ48DUmUlt7C6WbZNLnujwT"
   ami_name      = "Jenkinss"
   instance_type = "t2.small"
-  region        = "us-east-1a"
-  source_ami    = "ami-04b70fa74e45c3917"
+  region        = "us-east-2"
+  source_ami    = "ami-09040d770ffe2224f"
   ssh_username  = "ubuntu"
 }
 

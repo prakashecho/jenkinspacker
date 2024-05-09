@@ -1,42 +1,29 @@
-name: Build and Deploy
+name: Run Packer
 
 on:
   push:
-   branches:
-     - "main"
-env:
-  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID}}
-  AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  build-artifact:
-    name: Build
+  build:
     runs-on: ubuntu-latest
-
+    
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@8c3f20df09ac63af7b3ae3d7c91f105f857d8497 # v4.0.0
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
+    - name: Install Packer
+      run: |
+        wget https://releases.hashicorp.com/packer/1.7.4/packer_1.7.4_linux_amd64.zip
+        unzip packer_1.7.4_linux_amd64.zip
+        sudo mv packer /usr/local/bin/
 
+    - name: Validate Packer configuration
+      run: packer validate jenkinsubuntu.pkr.hcl
 
-      - name: Packer Init
-          run: packer init .
-
-      - name: Packer Build - Branches
-        if: startsWith(github.ref, 'refs/heads/')
-        run: packer build .
-
-   
-
-
-
-
-
-
-        
+    - name: Build using Packer
+      run: packer build jenkinsubuntu.pkr.hcl

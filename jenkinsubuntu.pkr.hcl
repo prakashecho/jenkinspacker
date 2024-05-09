@@ -7,10 +7,13 @@ packer {
   }
 }
 
+env:
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID}}
+  AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+
 source "amazon-ebs" "ubuntu" {
-  access_key    = "AKIA4XIRYD2OOEBAOWW5"
-  secret_key    = "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"
-  ami_name      = "packjen"
+  access_key    = ${{ secrets.AWS_ACCESS_KEY_ID }}
+  secret_key    = ${{ secrets.AWS_SECRET_ACCESS_KEY }}
   instance_type = "t2.small"
   region        = "us-east-1"
   source_ami    = "ami-04b70fa74e45c3917"

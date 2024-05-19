@@ -9,8 +9,8 @@ packer {
 
 
 source "amazon-ebs" "ubuntu" {
-  access_key    = "AKIA4XIRYD2OHNGZMM6B"
-  secret_key    = "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"
+  access_key    = ""
+  secret_key    = ""
   ami_name      = "Jenkinss"
   instance_type = "t2.small"
   region        = "us-east-1"

@@ -30,7 +30,7 @@ jobs:
         with:
             packer_version: "1.8.5"
             plugins: |
-              github.com/hashicorp/amazon/latest
+              github.com/hashicorp/amazon@1.3.2
 
       - name: Run `packer init`
         id: init

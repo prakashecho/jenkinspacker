@@ -4,7 +4,6 @@ packer {
       version = ">=1.3.2"
       source  = "github.com/hashicorp/amazon"
     }
-    
   }
 }
 
@@ -33,27 +32,23 @@ build {
       "sudo apt update -y",
       "sudo apt install openjdk-11-jdk -y",
       "sudo apt install maven wget unzip -y",
-      
     ]
   }
 
- post-processors {
-  post-processor "aws" {
-    type        = "ami"
-    region      = "us-east-1"  # Specify the region of the AMI
+  post-processors {
+    post-processor "amazon-ami-copy" {
+      region        = "us-east-1"  # Specify the region of the AMI
+      source_ami_id = "source.amazon-ebs.ubuntu"  # Specify the source AMI ID
 
-    ami_regions = ["us-east-1"]  # Regions where the AMI will be available
+      ami_name      = "Jenkins-AMI"  # Specify the name of the AMI
+      target_regions = ["us-east-1"]  # Regions where the AMI will be available
 
-    filters {
-      name   = "name"
-      values = ["Jenkins-AMI"]  # Specify the name of the AMI
+      encrypt_boot  = true  # Optional: Specify if you want to encrypt the boot volume
+      role_arn      = "arn:aws:iam::874599947932:role/gitaws"  # Specify the ARN of the IAM role
+
+      launch_permissions {
+        account_ids = ["280435798514"]  # AWS account IDs to share the AMI with
+      }
     }
-
-    launch_permission {
-      account_id = "280435798514"  # AWS account ID to share the AMI with
-    }
-
-    role_arn    = "arn:aws:iam::874599947932:role/gitaws"  # Replace with the ARN of the IAM role
   }
-}
 }

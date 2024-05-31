@@ -27,7 +27,7 @@ jobs:
 
       - name: Setup `packer`
         uses: hashicorp/setup-packer@v2
-          with:
+        with:
             packer_version: "1.8.5"
             plugins: |
               github.com/hashicorp/amazon/latest

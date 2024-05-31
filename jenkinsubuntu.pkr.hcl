@@ -42,6 +42,6 @@ build {
   post-processor "amazon-ami-copy" {
     ami_users    = ["280435798514"]
     encrypt_boot = true
-    role_name    = "arn:aws:iam::874599947932:role/gitaws"
+    role_name    = "arn:aws:iam::280435798514:role/awssts"
   }
 }

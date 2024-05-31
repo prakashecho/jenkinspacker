@@ -9,12 +9,12 @@ packer {
 
 source "amazon-ebs" "ubuntu" {
   ami_name      = "Jenkins-AMI"
-  instance_type = "t2.micro"
+  instance_type = "t2.small"
   region        = "us-east-1"
   source_ami    = "ami-04b70fa74e45c3917"
   ssh_username  = "ubuntu"
   encrypted     = true
-  kms_key_id    = "22ad3ccd-28a1-4d05-ad73-5f284cea93b3" # Replace with your actual KMS key ID
+  kms_key_id    = "22ad3ccd-28a1-4d05-ad73-5f284cea93b3"
 }
 
 build {
@@ -35,16 +35,19 @@ build {
     ]
   }
 
-  
-   post-processors {
-    post-processor "amazon-ami-management" {
-      only = ["amazon-ebs.ubuntu"]
-      share_with_accounts = ["280435798514"]
+  post-processors {
+    post-processor "amazon-ami-share" {
+      ami_regions = ["us-east-1"]
+      account_ids = ["280435798514"]
     }
 
-    post-processor "amazon-copy" {
-      regions = ["us-west-1", "us-west-2", "eu-west-1"] # Add any other regions you want to copy the AMI to
-      share_with_accounts = ["280435798514"] # Share with the same account in the copied regions
+    post-processor "amazon-ami-copy" {
+      regions = ["us-west-1", "us-west-2", "eu-west-1"]
+    }
+
+    post-processor "amazon-ami-share" {
+      ami_regions = ["us-west-1", "us-west-2", "eu-west-1"]
+      account_ids = ["280435798514"]
     }
   }
 }

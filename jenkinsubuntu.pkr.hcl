@@ -56,3 +56,4 @@ build {
     role_arn    = "arn:aws:iam::874599947932:role/gitaws"  # Replace with the ARN of the IAM role
   }
 }
+}

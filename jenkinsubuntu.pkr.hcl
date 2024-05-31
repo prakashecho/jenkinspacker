@@ -46,4 +46,4 @@ build {
     role_name    = "arn:aws:iam::874599947932:role/gitaws"
   }
 }
-}
+

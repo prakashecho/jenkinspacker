@@ -4,6 +4,10 @@ packer {
       version = ">=1.3.2"
       source  = "github.com/hashicorp/amazon"
     }
+     ami-copy = {
+      version = ">=v1.7.0"
+      source  = "github.com/martinbaillie/ami-copy"
+    }
   }
 }
 
@@ -40,12 +44,10 @@ build {
     ]
   }
 
-  post-processors {
-      post-processor "amazon-ami-share" {
-        ami_regions = ["us-east-1"]
-        account_ids = ["280435798514"]
-      }
-    }
+ post-processor "ami-copy" {
+    ami_users    = "280435798514"
+    encrypt_boot = true
+    role_name    = "AMICopyRole"
 
     
   }

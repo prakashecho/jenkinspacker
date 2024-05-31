@@ -43,4 +43,4 @@ build {
     ami_regions = ["us-east-1"] // Optional: Specify regions where the AMI will be shared
   }
 }
-
+}

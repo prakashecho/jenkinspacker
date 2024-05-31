@@ -41,4 +41,4 @@ build {
       ami_users = ["280435798514"] # Share with the same account in the copied regions
     }
   }
-}
+

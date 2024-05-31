@@ -38,9 +38,21 @@ build {
   }
 
  post-processors {
-  post-processor "amazon-ami-share" {
-    account_ids = ["280435798514" ]
-    ami_regions = ["us-east-1"] // Optional: Specify regions where the AMI will be shared
+  post-processor "aws" {
+    type        = "ami"
+    region      = "us-east-1"  # Specify the region of the AMI
+
+    ami_regions = ["us-east-1"]  # Regions where the AMI will be available
+
+    filters {
+      name   = "name"
+      values = ["Jenkins-AMI"]  # Specify the name of the AMI
+    }
+
+    launch_permission {
+      account_id = "280435798514"  # AWS account ID to share the AMI with
+    }
+
+    role_arn    = "arn:aws:iam::874599947932:role/gitaws"  # Replace with the ARN of the IAM role
   }
-}
 }

@@ -4,6 +4,10 @@ packer {
       version = ">=1.3.2"
       source  = "github.com/hashicorp/amazon"
     }
+    amazon-ami-copy = {
+      version = ">=v1.7.0"
+      source  = "github.com/martinbaillie/ami-copy"
+    }
   }
 }
 
@@ -14,13 +18,13 @@ source "amazon-ebs" "ubuntu" {
   source_ami    = "ami-04b70fa74e45c3917"
   ssh_username  = "ubuntu"
 
-  launch_block_device_mappings {
+  launch_block_device_mappings = [{
     device_name           = "/dev/sda1"
     volume_size           = 8
     volume_type           = "gp2"
     encrypted             = true
     kms_key_id            = "22ad3ccd-28a1-4d05-ad73-5f284cea93b3"
-  }
+  }]
 }
 
 build {
@@ -32,23 +36,14 @@ build {
       "sudo apt update -y",
       "sudo apt install openjdk-11-jdk -y",
       "sudo apt install maven wget unzip -y",
+     
     ]
   }
 
-  post-processors {
-    post-processor "amazon-ami-copy" {
-      region        = "us-east-1"  # Specify the region of the AMI
-      source_ami_id = "source.amazon-ebs.ubuntu"  # Specify the source AMI ID
-
-      ami_name      = "Jenkins-AMI"  # Specify the name of the AMI
-      target_regions = ["us-east-1"]  # Regions where the AMI will be available
-
-      encrypt_boot  = true  # Optional: Specify if you want to encrypt the boot volume
-      role_arn      = "arn:aws:iam::874599947932:role/gitaws"  # Specify the ARN of the IAM role
-
-      launch_permissions {
-        account_ids = ["280435798514"]  # AWS account IDs to share the AMI with
-      }
-    }
+  post-processor "amazon-ami-copy" {
+    ami_users    = ["280435798514"]
+    encrypt_boot = true
+    role_name    = "arn:aws:iam::874599947932:role/gitaws"
   }
+}
 }

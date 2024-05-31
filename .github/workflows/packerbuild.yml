@@ -25,12 +25,11 @@ jobs:
           role-session-name: github-actions
           aws-region: us-east-1  
 
-      - name: Setup `packer`
-        uses: hashicorp/setup-packer@v2
+      - name: Setup Packer
+        uses: hashicorp/setup-packer@main
+        id: setup
         with:
-            packer_version: "1.8.5"
-            plugins: |
-              github.com/hashicorp/amazon@1.3.2
+          version: "1.10.0"
 
       - name: Run `packer init`
         id: init

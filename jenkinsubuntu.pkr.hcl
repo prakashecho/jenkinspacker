@@ -4,7 +4,7 @@ packer {
       version = ">=1.3.2"
       source  = "github.com/hashicorp/amazon"
     }
-     ami-copy = {
+    ami-copy = {
       version = ">=v1.7.0"
       source  = "github.com/martinbaillie/ami-copy"
     }
@@ -18,7 +18,7 @@ source "amazon-ebs" "ubuntu" {
   source_ami    = "ami-04b70fa74e45c3917"
   ssh_username  = "ubuntu"
 
-  launch_block_device_mappings = {
+  launch_block_device_mappings {
     device_name           = "/dev/sda1"
     volume_size           = 8
     volume_type           = "gp2"
@@ -45,11 +45,9 @@ build {
     ]
   }
 
- post-processor "ami-copy" {
-    ami_users    = "280435798514"
+  post-processor "ami-copy" {
+    ami_users    = ["280435798514"]
     encrypt_boot = true
     role_name    = "AMICopyRole"
-
-    
   }
 }

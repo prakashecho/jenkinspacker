@@ -17,7 +17,8 @@ source "amazon-ebs" "ubuntu" {
   region        = "us-east-1"
   source_ami    = "ami-04b70fa74e45c3917"
   ssh_username  = "ubuntu"
-  block_device_mappings = [{
+
+  ami_block_device_mappings = [{
     device_name           = "/dev/sda1"
     volume_size           = 8
     volume_type           = "gp2"

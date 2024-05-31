@@ -41,13 +41,6 @@ build {
       account_ids = ["280435798514"]
     }
 
-    post-processor "amazon-ami-copy" {
-      regions = ["us-west-1", "us-west-2", "eu-west-1"]
-    }
-
-    post-processor "amazon-ami-share" {
-      ami_regions = ["us-west-1", "us-west-2", "eu-west-1"]
-      account_ids = ["280435798514"]
-    }
+    
   }
 }

@@ -36,9 +36,15 @@ build {
   }
 
   
-    post-processor "amazon-ami" {
+   post-processors {
+    post-processor "amazon-ami-management" {
+      only = ["amazon-ebs.ubuntu"]
+      share_with_accounts = ["280435798514"]
+    }
+
+    post-processor "amazon-copy" {
       regions = ["us-west-1", "us-west-2", "eu-west-1"] # Add any other regions you want to copy the AMI to
-      ami_users = ["280435798514"] # Share with the same account in the copied regions
+      share_with_accounts = ["280435798514"] # Share with the same account in the copied regions
     }
   }
-
+}

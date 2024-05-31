@@ -4,10 +4,7 @@ packer {
       version = ">=1.3.2"
       source  = "github.com/hashicorp/amazon"
     }
-    ami-copy = {
-      version = ">=v1.7.0"
-      source  = "github.com/martinbaillie/ami-copy"
-    }
+    
   }
 }
 

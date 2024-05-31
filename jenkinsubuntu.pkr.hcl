@@ -35,11 +35,7 @@ build {
     ]
   }
 
-  post-processors {
-    post-processor "amazon-ami-share" {
-      ami_regions = ["us-east-1"]
-      account_ids = ["280435798514"]
-    }
+
 
     
   }

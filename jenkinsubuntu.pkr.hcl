@@ -41,29 +41,11 @@ build {
     ]
   }
 
-  provisioner "shell-local" {
-    command = <<-EOF
-      # Capture the AMI ID built by Packer
-      echo "AMI_ID=$(cat ami_id.txt)" >> packer_output.txt
-    EOF
+  post-processor "ami_copy" {
+    ami_name   = "Jenkins-AMI-Copy"
+    source_ami = "{{ .BuildSourceAMI }}"
+    region     = "us-east-1"  # Replace with the desired region
+    ami_regions = ["us-west-2", "eu-west-1"]  # Regions to copy the AMI to
+    ami_users   = ["280435798514"]  # AWS account IDs to share the AMI with
   }
-
-  provisioner "file" {
-    source      = "/dev/null"
-    destination = "ami_id.txt"
-  }
-
-  provisioner "file" {
-    source      = "/dev/null"
-    destination = "packer_output.txt"
-  }
-}
-
-post-processor "local-exec" {
-  when    = "build"
-  command = <<-EOF
-    aws ec2 modify-image-attribute \
-      --image-id ${var.built_ami_id} \
-      --launch-permission "{\"Add\": [{\"UserId\":\"280435798514\"}]}"
-  EOF
 }

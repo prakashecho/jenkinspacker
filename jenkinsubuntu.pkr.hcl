@@ -38,10 +38,10 @@ build {
   }
 
   
+ 
   post-processor "shell" {
     inline = [
       "chmod +x pack.sh",  # Make the script executable
       "./pack.sh"          # Execute the script
     ]
   }
-}

@@ -41,7 +41,7 @@ build {
     ]
   }
 
-  post-processor "ami_copy" {
+  post-processor "ami-copy" {
     ami_name   = "Jenkins-AMI-Copy"
     source_ami = "{{ .BuildSourceAMI }}"
     region     = "us-east-1"  # Replace with the desired region

@@ -68,9 +68,7 @@ output "ami_id" {
 post-processors {
     post-processors {
   local-exec {
-   command = "aws ec2 modify-image-attribute \
-      --image-id "${var.built_ami_id}" \
-      --launch-permission \"Add=[{280435798514}]\""
+   aws ec2 modify-image-attribute  --image-id  "${var.built_ami_id}"  --launch-permission "Add=[{280435798514}]"
   }
 }
 

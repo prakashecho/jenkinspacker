@@ -37,7 +37,7 @@ build {
       
     ]
   }
-
+}
   provisioner "local-exec" {
   command = <<-EOF
     # Copy the AMI to another region

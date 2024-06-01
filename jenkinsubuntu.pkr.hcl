@@ -63,14 +63,13 @@ output "ami_id" {
   value = "${var.built_ami_id}"
 }
 
-post-processors {
-  local-exec {
-    command = <<-EOF
-      # Copy the AMI to another region
-      aws ec2 copy-image --source-image-id ${var.built_ami_id} --source-region us-east-1 --region us-west-1 --name Jenkins-AMI
 
-      # Share the copied AMI with another AWS account
-      aws ec2 modify-image-attribute --image-id ${var.built_ami_id} --launch-permission "{\"Add\": [{\"UserId\":\"280435798514\"}]}"
-    EOF
-  }
+
+post-processors {
+    post-processor "shell-local" { # create an artifice.txt file containing "hello"
+      inline = [ "aws ec2 copy-image --source-image-id ${var.built_ami_id} --source-region us-east-1 --region us-west-1 --name Jenkins-AMI" ]
+}
+   post-processor "artifice" { # tell packer this is now the new artifact
+      files = ["aws ec2 modify-image-attribute --image-id ${var.built_ami_id} --launch-permission "{\"Add\": [{\"UserId\":\"280435798514\"}]}""]
+    }
 }

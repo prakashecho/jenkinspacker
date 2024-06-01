@@ -27,10 +27,6 @@ source "amazon-ebs" "ubuntu" {
   }
 }
 
-variable "built_ami_id" {
-  description = "The ID of the AMI built by Packer"
-}
-
 build {
   name    = "jenkins-build"
   sources = ["source.amazon-ebs.ubuntu"]

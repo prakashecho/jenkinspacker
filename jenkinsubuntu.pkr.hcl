@@ -4,10 +4,6 @@ packer {
       version = ">=1.3.2"
       source  = "github.com/hashicorp/amazon"
     }
-    amazon-ami-copy = {
-      version = ">=v1.7.0"
-      source  = "github.com/martinbaillie/ami-copy"
-    }
   }
 }
 
@@ -36,13 +32,12 @@ build {
     ]
   }
 
-  post-processor "amazon-ami-copy" {
-    source_ami        = "Jenkins-AMI"
-    source_ami_region = "us-east-1"
-    ami_name          = "Jenkins-AMI-Copy"
-    ami_regions       = ["us-west-2", "eu-west-1"]
-    account_ids       = ["280435798514"]
-    tags              = {
+  post-processor "amazon-ebs" {
+    region        = "us-east-1"
+    ami_name      = "Jenkins-AMI-Copy"
+    ami_regions   = ["us-west-2", "eu-west-1"]
+    ami_users     = ["280435798514"]
+    tags          = {
       "Name" = "Jenkins-AMI-Copy"
     }
   }

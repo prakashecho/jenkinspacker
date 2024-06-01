@@ -37,7 +37,7 @@ build {
     ]
   }
 
-  provisioner "local-exec" {
+  provisioner "shell-local" {
     command = <<-EOF
       # Copy the AMI to another region
       ami_id=$(aws ec2 copy-image --source-image-id ${self.source_ami} --source-region us-east-1 --region us-west-1 --name Jenkins-AMI --output text --query "ImageId")

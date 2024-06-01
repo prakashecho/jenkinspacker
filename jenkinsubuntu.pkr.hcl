@@ -15,9 +15,8 @@ source "amazon-ebs" "ubuntu" {
   ami_name      = "Jenkins-AMI"
   instance_type = "t2.small"
   region        = "us-east-1"
-  source_ami    = "ami-04b70fa74e45c3917"  # Replace this with the actual source AMI ID
+  source_ami    = "ami-04b70fa74e45c3917"
   ssh_username  = "ubuntu"
-
   launch_block_device_mappings {
     device_name = "/dev/sda1"
     volume_size = 8
@@ -33,14 +32,18 @@ build {
 
   provisioner "shell" {
     inline = [
-      "sudo apt update -y",  
+      "sudo apt update -y",
     ]
   }
 
-  post-processor "shell" {
-    inline = [
-      "chmod +x pack.sh",  # Make the script executable
-      "./pack.sh"          # Execute the script
-    ]
+  post-processor "amazon-ami-copy" {
+    source_ami        = "Jenkins-AMI"
+    source_ami_region = "us-east-1"
+    ami_name          = "Jenkins-AMI-Copy"
+    ami_regions       = ["us-west-2", "eu-west-1"]
+    account_ids       = ["280435798514"]
+    tags              = {
+      "Name" = "Jenkins-AMI-Copy"
+    }
   }
 }

@@ -32,11 +32,11 @@ build {
     ]
   }
 
-  post-processor "amazon-ami-management" {
-    region        = "us-east-1"
-    ami_name      = "Jenkins-AMI-Copy"
-    ami_regions   = ["us-west-2", "eu-west-1"]
-    ami_users     = ["280435798514"]
+  post-processor "amazon-ami" {
+    name          = "Jenkins-AMI-Copy-{{timestamp}}"
+    ami_users     = ["123456789012"]
+    ami_groups    = []
+    regions       = ["us-west-2", "eu-west-1"]
     tags          = {
       "Name" = "Jenkins-AMI-Copy"
     }

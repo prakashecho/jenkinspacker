@@ -66,13 +66,12 @@ output "ami_id" {
 
 
 post-processors {
-    post-processors {
   local-exec {
-   aws ec2 modify-image-attribute  --image-id  "${var.built_ami_id}"  --launch-permission "Add=[{280435798514}]"
+    command = <<-EOF
+      aws ec2 modify-image-attribute \
+        --image-id ${var.built_ami_id} \
+        --launch-permission "{\"Add\": [{\"UserId\":\"280435798514\"}]}"
+    EOF
   }
 }
-
-   post-processor "artifice" { # tell packer this is now the new artifact
-      files = ["aws ec2 modify-image-attribute --image-id ${var.built_ami_id} --launch-permission "{\"Add\": [{\"UserId\":\"280435798514\"}]}""]
-    }
 }

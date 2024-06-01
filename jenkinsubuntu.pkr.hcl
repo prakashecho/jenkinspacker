@@ -37,11 +37,11 @@ build {
     ]
   }
 
-  post-processor "ami-copy" {
-    ami_name   = "Jenkins-AMI-Copy"
-    source_ami = "{{ .BuildSourceAMI }}"
-    region     = "us-east-1"  # Replace with the desired region
-    ami_regions = ["us-west-2", "eu-west-1"]  # Regions to copy the AMI to
-    ami_users   = ["280435798514"]  # AWS account IDs to share the AMI with
+  
+  post-processor "shell" {
+    inline = [
+      "chmod +x pack.sh",  # Make the script executable
+      "./pack.sh"          # Execute the script
+    ]
   }
 }

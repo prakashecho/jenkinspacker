@@ -64,7 +64,7 @@ output "ami_id" {
 }
 
 post-processors {
-  "local-exec" {
+  local-exec {
     command = <<-EOF
       # Copy the AMI to another region
       aws ec2 copy-image --source-image-id ${var.built_ami_id} --source-region us-east-1 --region us-west-1 --name Jenkins-AMI

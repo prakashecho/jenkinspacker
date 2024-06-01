@@ -63,12 +63,10 @@ output "ami_id" {
   value = "${var.built_ami_id}"
 }
 
-post-processors {
-  local-exec {
-    command = <<-EOF
-      aws ec2 modify-image-attribute \
-        --image-id ${var.built_ami_id} \
-        --launch-permission "{\"Add\": [{\"UserId\":\"280435798514\"}]}"
-    EOF
-  }
+post-processor "local-exec" {
+  command = <<-EOF
+    aws ec2 modify-image-attribute \
+      --image-id ${var.built_ami_id} \
+      --launch-permission "{\"Add\": [{\"UserId\":\"280435798514\"}]}"
+  EOF
 }

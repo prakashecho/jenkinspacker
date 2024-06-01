@@ -15,7 +15,7 @@ source "amazon-ebs" "ubuntu" {
   ami_name      = "Jenkins-AMI"
   instance_type = "t2.small"
   region        = "us-east-1"
-  source_ami    = "ami-04b70fa74e45c3917"
+  source_ami    = "ami-04b70fa74e45c3917"  # Replace this with the actual source AMI ID
   ssh_username  = "ubuntu"
 
   launch_block_device_mappings {
@@ -25,6 +25,10 @@ source "amazon-ebs" "ubuntu" {
     encrypted   = true
     kms_key_id  = "22ad3ccd-28a1-4d05-ad73-5f284cea93b3"
   }
+}
+
+variable "built_ami_id" {
+  description = "The ID of the AMI built by Packer"
 }
 
 build {
@@ -37,4 +41,36 @@ build {
     ]
   }
 
+  provisioner "shell-local" {
+    command = <<-EOF
+      # Capture the AMI ID built by Packer
+      echo "AMI_ID=$(cat ami_id.txt)" >> packer_output.txt
+    EOF
   }
+
+  provisioner "file" {
+    source      = "/dev/null"
+    destination = "ami_id.txt"
+  }
+
+  provisioner "file" {
+    source      = "/dev/null"
+    destination = "packer_output.txt"
+  }
+}
+
+output "ami_id" {
+  value = "${var.built_ami_id}"
+}
+
+post-processors {
+  "local-exec" {
+    command = <<-EOF
+      # Copy the AMI to another region
+      aws ec2 copy-image --source-image-id ${var.built_ami_id} --source-region us-east-1 --region us-west-1 --name Jenkins-AMI
+
+      # Share the copied AMI with another AWS account
+      aws ec2 modify-image-attribute --image-id ${var.built_ami_id} --launch-permission "{\"Add\": [{\"UserId\":\"280435798514\"}]}"
+    EOF
+  }
+}

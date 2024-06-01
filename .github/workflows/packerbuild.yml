@@ -23,7 +23,11 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::874599947932:role/gitaws
           role-session-name: github-actions
-          aws-region: us-east-1  
+            aws-region: us-east-1  
+      - name: Install AWS CLI
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y awscli
 
       - name: Setup `packer`
         uses: hashicorp/setup-packer@v2

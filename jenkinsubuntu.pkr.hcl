@@ -32,7 +32,7 @@ build {
     ]
   }
 
-  post-processor "amazon-ebs" {
+  post-processor "amazon-ami-management" {
     region        = "us-east-1"
     ami_name      = "Jenkins-AMI-Copy"
     ami_regions   = ["us-west-2", "eu-west-1"]

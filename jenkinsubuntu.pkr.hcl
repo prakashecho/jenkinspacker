@@ -32,13 +32,17 @@ build {
     ]
   }
 
-  post-processor "amazon-ami" {
-    name          = "Jenkins-AMI-Copy-{{timestamp}}"
-    ami_users     = ["123456789012"]
-    ami_groups    = []
-    regions       = ["us-west-2", "eu-west-1"]
-    tags          = {
-      "Name" = "Jenkins-AMI-Copy"
-    }
+  post-processor "manifest" {
+    output = "manifest.json"
+    strip_path = true
+  }
+
+  post-processor "shell-local" {
+    inline = [
+      "AMI_ID=$(jq -r '.builds[-1].artifact_id' manifest.json | cut -d ':' -f 2)",
+      "aws ec2 copy-image --source-image-id $AMI_ID --source-region us-east-1 --name \"Jenkins-AMI-Copy\" --region us-west-2",
+      "aws ec2 copy-image --source-image-id $AMI_ID --source-region us-east-1 --name \"Jenkins-AMI-Copy\" --region eu-west-1",
+      "aws ec2 modify-image-attribute --image-id $AMI_ID --launch-permission \"Add=[{UserId=123456789012}]\" --region us-east-1"
+    ]
   }
 }

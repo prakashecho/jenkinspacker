@@ -33,17 +33,17 @@ build {
 
   provisioner "shell" {
     inline = [
-      "sudo apt update -y",
-      
+      "sudo apt update -y",  
     ]
   }
-}
-  provisioner "local-exec" {
-  command = <<-EOF
-    # Copy the AMI to another region
-    ami_id=$(aws ec2 copy-image --source-image-id ${self.source_ami} --source-region us-east-1 --region us-west-1 --name Jenkins-AMI --output text --query "ImageId")
 
-    # Share the copied AMI with another AWS account
-    aws ec2 modify-image-attribute --image-id $ami_id --launch-permission "{\"Add\": [{\"UserId\":\"280435798514\"}]}"
-  EOF
+  provisioner "local-exec" {
+    command = <<-EOF
+      # Copy the AMI to another region
+      ami_id=$(aws ec2 copy-image --source-image-id ${self.source_ami} --source-region us-east-1 --region us-west-1 --name Jenkins-AMI --output text --query "ImageId")
+
+      # Share the copied AMI with another AWS account
+      aws ec2 modify-image-attribute --image-id $ami_id --launch-permission "{\"Add\": [{\"UserId\":\"280435798514\"}]}"
+    EOF
+  }
 }

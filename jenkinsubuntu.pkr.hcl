@@ -8,7 +8,7 @@ packer {
 }
 
 source "amazon-ebs" "ubuntu" {
-  ami_name      = "Jenkins-AMI"
+  ami_name      = "Jenkins-AMI1"
   instance_type = "t2.small"
   region        = "us-east-1"
   source_ami    = "ami-04b70fa74e45c3917"
@@ -36,6 +36,9 @@ build {
   }
 
   post-processor "shell-local" {
-    script = "pack.sh"
+    inline = [
+      "chmod +x pack.sh",
+      "./pack.sh"
+    ]
   }
 }

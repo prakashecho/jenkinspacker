@@ -27,7 +27,7 @@ build {
   sources = ["source.amazon-ebs.ubuntu"]
 
   provisioner "shell" {
-    script = "jenkins_script.sh"
+    script = "jenkins_install.sh"
   }
 
   post-processor "manifest" {

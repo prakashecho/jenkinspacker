@@ -18,7 +18,7 @@ source "amazon-ebs" "ubuntu" {
     volume_size = 8
     volume_type = "gp2"
     encrypted   = true
-    kms_key_id  = "22ad3ccd-28a1-4d05-ad73-5f284cea93b3"
+    kms_key_id  = "alias/ami2_key-alias"
   }
 }
 
@@ -27,9 +27,7 @@ build {
   sources = ["source.amazon-ebs.ubuntu"]
 
   provisioner "shell" {
-    inline = [
-      "sudo apt update -y",
-    ]
+    script = "jenkins_script.sh"
   }
 
   post-processor "manifest" {
@@ -38,10 +36,6 @@ build {
   }
 
   post-processor "shell-local" {
-    inline = [
-      "AMI_ID=$(jq -r '.builds[-1].artifact_id' manifest.json | cut -d ':' -f 2)",
-      "aws ec2 copy-image --source-image-id $AMI_ID --source-region us-east-1 --name \"Jenkins-AMI-Copy\" --region us-west-2",
-      "aws ec2 modify-image-attribute --image-id $AMI_ID --launch-permission \"Add=[{UserId=280435798514}]\" --region us-east-1"
-    ]
+    script = "pack.sh"
   }
 }

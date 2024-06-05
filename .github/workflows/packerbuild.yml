@@ -1,20 +1,30 @@
-name: packer
-
+name: Build Jenkins AMI
 on:
-  push:
+  workflow_dispatch:
+    inputs:
+      repo:
+        description: 'Repository containing Packer files (e.g., prakashecho/jenkinspacker)'
+        required: true
+        default: 'prakashecho/packer'
+      branch:
+        description: 'Branch to use'
+        required: true
+        default: 'main'
+
 permissions:
   id-token: write # This is required for requesting the JWT
-
-env:
-  PRODUCT_VERSION: "1.10.0" # or: "latest"
 
 jobs:
   packer:
     runs-on: ubuntu-latest
     name: Run Packer
     steps:
-      - name: Checkout
+      - name: Checkout Packer files
         uses: actions/checkout@v4
+        with:
+          repository: ${{ github.event.inputs.repo }}
+          ref: ${{ github.event.inputs.branch }}
+          path: packer-files
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4.0.2
@@ -23,10 +33,10 @@ jobs:
           role-session-name: github-actions
           aws-region: us-east-1  
 
-      - name: Install AWS CLI
+      - name: Install AWS CLI and jq
         run: |
           sudo apt-get update
-          sudo apt-get install -y awscli
+          sudo apt-get install -y awscli jq
 
       - name: Setup `packer`
         uses: hashicorp/setup-packer@v2
@@ -37,12 +47,18 @@ jobs:
 
       - name: Run `packer init`
         id: init
-        run: "packer init ./jenkinsubuntu.pkr.hcl"
+        run: |
+          cd packer-files
+          packer init ./jenkinsubuntu.pkr.hcl
 
       - name: Run `packer validate`
         id: validate
-        run: "packer validate ./jenkinsubuntu.pkr.hcl"
+        run: |
+          cd packer-files
+          packer validate ./jenkinsubuntu.pkr.hcl
 
       - name: Run 'packer build'
         id: build
-        run: packer build  ./jenkinsubuntu.pkr.hcl
+        run: |
+          cd packer-files
+          packer build ./jenkinsubuntu.pkr.hcl
